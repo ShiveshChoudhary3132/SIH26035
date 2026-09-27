@@ -1,0 +1,70 @@
+@import "tailwindcss";
+
+/* Palette follows the SIH26035 deck: navy for structure, saffron for
+   actions that need attention, green for pass. */
+@theme {
+  --font-sans: var(--font-plex-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-plex-mono), ui-monospace, monospace;
+
+  --color-navy-50: #f2f5f9;
+  --color-navy-100: #e1e8f0;
+  --color-navy-200: #c3d0e0;
+  --color-navy-300: #97aec8;
+  --color-navy-400: #6484a8;
+  --color-navy-500: #41658c;
+  --color-navy-600: #2c4f76;
+  --color-navy-700: #1b3a5c;
+  --color-navy-800: #152e4a;
+  --color-navy-900: #0f2138;
+
+  --color-saffron-50: #fef4ec;
+  --color-saffron-100: #fce3cf;
+  --color-saffron-200: #f8c29d;
+  --color-saffron-500: #e8712b;
+  --color-saffron-600: #cf5e1c;
+  --color-saffron-700: #a94a15;
+}
+
+body {
+  color: var(--color-slate-800);
+}
+
+@utility btn-primary {
+  @apply inline-flex h-10 items-center justify-center gap-2 rounded-md bg-navy-700 px-4 text-sm font-medium text-white transition-colors hover:bg-navy-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-navy-500 disabled:pointer-events-none disabled:opacity-50;
+}
+@utility btn-accent {
+  @apply inline-flex h-10 items-center justify-center gap-2 rounded-md bg-saffron-500 px-4 text-sm font-medium text-white transition-colors hover:bg-saffron-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-saffron-500 disabled:pointer-events-none disabled:opacity-50;
+}
+@utility btn-secondary {
+  @apply inline-flex h-10 items-center justify-center gap-2 rounded-md border border-slate-300 bg-white px-4 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-navy-500 disabled:pointer-events-none disabled:opacity-50;
+}
+@utility btn-danger {
+  @apply inline-flex h-10 items-center justify-center gap-2 rounded-md bg-red-600 px-4 text-sm font-medium text-white transition-colors hover:bg-red-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-500 disabled:pointer-events-none disabled:opacity-50;
+}
+@utility input {
+  @apply block h-10 w-full rounded-md border border-slate-300 bg-white px-3 text-sm text-slate-900 placeholder:text-slate-400 focus:border-navy-500 focus:ring-2 focus:ring-navy-100 focus:outline-none aria-invalid:border-red-400 aria-invalid:ring-red-100;
+}
+@utility th {
+  @apply px-3 py-2.5 text-left text-xs font-medium tracking-wide text-slate-500 uppercase;
+}
+@utility td {
+  @apply px-3 py-2.5 text-sm whitespace-nowrap;
+}
+
+/* numbers in tables line up by digit */
+.tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+@media print {
+  @page {
+    size: A4;
+    margin: 14mm;
+  }
+  body {
+    background: white;
+  }
+  .page-break-inside-avoid {
+    break-inside: avoid;
+  }
+}

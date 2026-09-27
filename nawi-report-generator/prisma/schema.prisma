@@ -1,0 +1,66 @@
+// prisma/schema.prisma
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model Instrument {
+  id              String   @id @default(uuid())
+  manufacturer    String
+  model           String
+  serialNumber    String
+  capacity        Float
+  accuracyClass   String   // e.g., I, II, III, IIII
+  scaleIntervalE  Float
+  scaleIntervalD  Float
+  minCapacity     Float
+  maxCapacity     Float
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  reports         TestReport[]
+}
+
+model TestReport {
+  id              String   @id @default(uuid())
+  instrumentId    String
+  testerName      String
+  date            DateTime @default(now())
+  temperature     Float
+  humidity        Float
+  pressure        Float
+  // conditions re-read when the test is closed (R 76-2 asks for start and end)
+  temperatureEnd  Float?
+  humidityEnd     Float?
+  pressureEnd     Float?
+  zeroTracking    String?  // NonExistent, NotInOperation, OutOfRange, InOperation
+  remarks         String?
+  status          String   @default("Draft") // Draft, Completed
+  result          String?  // Pass, Fail
+  completedAt     DateTime?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  instrument      Instrument @relation(fields: [instrumentId], references: [id], onDelete: Cascade)
+  observations    TestObservation[]
+}
+
+model TestObservation {
+  id              String   @id @default(uuid())
+  reportId        String
+  testType        String   // "Repeatability", "Eccentricity", "WeighingPerformance", "Tare"
+  load            Float
+  indication      Float
+  error           Float
+  mpe             Float
+  result          String
+  position        String?  // For eccentricity (e.g., "Center", "Front-Left", etc.)
+  tareValue       Float?   // For tare tests
+
+  report          TestReport @relation(fields: [reportId], references: [id], onDelete: Cascade)
+}
